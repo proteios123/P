@@ -1,14 +1,7 @@
-"""
-================================================================
-PROTEIOS EDUCATION — FLASK BACKEND  (app.py)
-Build Spec v1.3
-================================================================
-"""
-
 from flask import Flask, render_template, jsonify, request
 from datetime import datetime
 
-# SAFE IMPORT FOR VERCEL (prevents crash if bundling fails)
+# SAFE IMPORT FOR VERCEL
 try:
     import requests as req_lib
 except Exception:
@@ -37,9 +30,17 @@ SITE = {
         {"value": 3, "suffix": "", "label": "Continents", "data_count": "3"},
         {"value": "∞", "suffix": "", "label": "Endless Possibilities", "data_count": None},
     ],
+
+    # ✔ FIX: REQUIRED BY YOUR TEMPLATES
+    "social": {
+        "instagram": "https://www.instagram.com/proteioseducation",
+        "facebook": "https://www.facebook.com/share/1DJoNKSVj2/",
+        "linkedin": "https://www.linkedin.com/in/proteios-education-3050a43b6",
+        "youtube": "https://youtube.com/@proteioseducation"
+    }
 }
 
-# ── MAIN ROUTES ───────────────────────────────────────────────
+# ── ROUTES ────────────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html", site=SITE, page="home")
@@ -63,11 +64,9 @@ def contact():
 # ── API: STATS ────────────────────────────────────────────────
 @app.route("/api/stats")
 def api_stats():
-    return jsonify({
-        "stats": SITE["stats"],
-    })
+    return jsonify({"stats": SITE["stats"]})
 
-# ── API: CONTACT (VERCEL SAFE) ────────────────────────────────
+# ── API: CONTACT ──────────────────────────────────────────────
 @app.route("/api/contact", methods=["POST"])
 def api_contact():
     data = request.get_json(silent=True) or {}
@@ -75,7 +74,7 @@ def api_contact():
     required = ["name", "parentage", "school", "student_class"]
     for field in required:
         if not data.get(field, "").strip():
-            return jsonify({"ok": False, "error": f"'{field}' is required."}), 400
+            return jsonify({"ok": False, "error": f"{field} is required"}), 400
 
     payload = {
         "name": data.get("name"),
@@ -88,7 +87,7 @@ def api_contact():
 
     try:
         if req_lib is None:
-            return jsonify({"ok": False, "error": "Server dependency missing (requests)."}), 500
+            return jsonify({"ok": False, "error": "Requests not available"}), 500
 
         resp = req_lib.post(
             FORMSPREE_URL,
@@ -98,9 +97,9 @@ def api_contact():
         )
 
         if resp.status_code == 200:
-            return jsonify({"ok": True, "message": "Thank you. Our team will reach out soon."})
+            return jsonify({"ok": True, "message": "Submitted successfully"})
 
-        return jsonify({"ok": False, "error": "Something went wrong. Try again."}), 502
+        return jsonify({"ok": False, "error": "Form submission failed"}), 502
 
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
@@ -112,5 +111,5 @@ def not_found(e):
     return render_template("index.html", site=SITE, page="404"), 404
 
 
-# ── VERCEL ENTRY POINT ────────────────────────────────────────
+# ── VERCEL ENTRY ───────────────────────────────────────────────
 app = app
