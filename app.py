@@ -19,8 +19,9 @@ SITE = {
     "tagline": "Together, We Turn Ambition Into Action",
     "year":    datetime.now().year,
 
-    "logo":  "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/IMG-20260417-WA0104.jpg",
-    "video": "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/8196816-hd_1920_1080_25fps.mp4",
+    # Updated with your new Raw GitHub links
+    "logo":  "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260418-WA0050.jpg",
+    "video": "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/7125842-uhd_2160_3840_24fps.mp4",
 
     "maps_url": "https://maps.app.goo.gl/xCXdo4xhjCA3ytqk6?g_st=aw",
 
@@ -59,14 +60,14 @@ SITE = {
         {
             "name":  "Mir Murtakib",
             "role":  "Founder",
-            "photo": "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/IMG-20260417-WA0106.jpg",
+            "photo": "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260418-WA0051.jpg",
             "quote": "At Proteios, my vision has always been clear — to redefine how students approach education, not just as a pathway to degrees, but as a foundation for life.",
             "bio":   "Through Proteios, the focus has been on building a platform that bridges ambition with opportunity. Working closely with students to understand their strengths, aspirations, and potential — guiding them with tailored strategies from NEET and JEE to SAT, ACT, IELTS, and TOEFL preparation for the global stage.",
         },
         {
             "name":  "Younus Beigh",
             "role":  "Co-Founder",
-            "photo": "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/IMG-20260417-WA0098.jpg",
+            "photo": "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260417-WA0096.jpg",
             "quote": "My vision is to create an ecosystem where students are empowered, educators are supported, and families feel confident about the journey ahead.",
             "bio":   "With over 24 years of experience across India, the UAE, and Saudi Arabia — engaging with schools and education systems — Younus brings a perspective that blends global exposure with a deep understanding of local educational needs, rooted in Kashmir.",
         },
@@ -91,12 +92,10 @@ SITE = {
     ],
 
     "images": [
-        "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/pexels-zen-chung-5538573.jpg",
-        "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/pexels-yaroslav-shuraev-9490514.jpg",
-        "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/pexels-mikhail-nilov-9159059.jpg",
-        "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/pexels-karola-g-7692561.jpg",
-        "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/pexels-ivan-s-5676678.jpg",
-        "https://raw.githubusercontent.com/proteios123/Proteios/5f1c60295b9d84ee135cbce338d6a0cb037c8d8f/pexels-george-pak-7972372.jpg",
+        "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260418-WA0055.jpg",
+        "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260418-WA0054.jpg",
+        "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260418-WA0052.jpg",
+        "https://raw.githubusercontent.com/proteios123/P/b467494c00ea66bb7a273305016e03f8e3b15af0/IMG-20260417-WA0043.jpg",
     ],
 
     "social": {
@@ -129,32 +128,27 @@ FORM_PAGES = {
 # ── MAIN ROUTES ───────────────────────────────────────────────
 @app.route("/")
 def index():
-    # Pass SITE to the template; Jinja2 will look for 'social' within SITE
     return render_template("index.html", site=SITE, page="home")
 
 @app.route("/six-pathways")
 def six_pathways():
     ctx = FORM_PAGES.get("six-pathways")
-    return render_template("form_page.html", site=SITE, page="six-pathways",
-                           h1=ctx["h1"], intro=ctx["intro"])
+    return render_template("form_page.html", site=SITE, page="six-pathways", h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/internships")
 def internships():
     ctx = FORM_PAGES.get("internships")
-    return render_template("form_page.html", site=SITE, page="internships",
-                           h1=ctx["h1"], intro=ctx["intro"])
+    return render_template("form_page.html", site=SITE, page="internships", h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/programs-events")
 def programs_events():
     ctx = FORM_PAGES.get("programs-events")
-    return render_template("form_page.html", site=SITE, page="programs-events",
-                           h1=ctx["h1"], intro=ctx["intro"])
+    return render_template("form_page.html", site=SITE, page="programs-events", h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/contact")
 def contact():
     ctx = FORM_PAGES.get("contact")
-    return render_template("form_page.html", site=SITE, page="contact",
-                           h1=ctx["h1"], intro=ctx["intro"])
+    return render_template("form_page.html", site=SITE, page="contact", h1=ctx["h1"], intro=ctx["intro"])
 
 # ── API: STATS ────────────────────────────────────────────────
 @app.route("/api/stats")
@@ -183,8 +177,7 @@ def api_contact():
         "_subject":      f"New enquiry from {data.get('name')}",
     }
     try:
-        resp = req_lib.post(FORMSPREE_URL, json=payload,
-                            headers={"Accept": "application/json"}, timeout=8)
+        resp = req_lib.post(FORMSPREE_URL, json=payload, headers={"Accept": "application/json"}, timeout=8)
         if resp.status_code == 200:
             return jsonify({"ok": True,  "message": "Thank you. Our team will reach out soon."})
         return jsonify({"ok": False, "error": "Something went wrong. Try again."}), 502
@@ -198,6 +191,5 @@ def not_found(e):
 
 # ── ENTRY ─────────────────────────────────────────────────────
 if __name__ == "__main__":
-    # Standard production practice: check for an environment port
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=True, host="0.0.0.0", port=port)

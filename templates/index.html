@@ -3,30 +3,26 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Proteios Education — Bridging global opportunities with local potential. Expert guidance for NEET, JEE, Ivy League admissions, SAT, IELTS & more."/>
+  <meta name="description" content="Proteios Education — Bridging global opportunities with local potential."/>
   <title>{{ site.name }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/static/css/style.css"/>
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════
-     NAVIGATION
-════════════════════════════════════════════════════════════ -->
 <nav id="navbar" role="navigation" aria-label="Main navigation">
   <div class="nav-logo">
     <a href="/">
-      <img src="{{ site.logo }}" alt="{{ site.name }}" height="44"
-           onerror="this.style.display='none'"/>
+      <img src="{{ site.logo }}" alt="{{ site.name }}" height="44"/>
     </a>
   </div>
   <ul class="nav-links" id="navLinks">
     {% for item in site.nav %}
     <li>
-      <a href="{{ item.href }}"
-         {% if item.label == 'Work Opportunities' %}class="nav-cta-link"{% endif %}>
+      <a href="{{ item.href }}" {% if item.label == 'Work Opportunities' %}class="nav-cta-link"{% endif %}>
         {{ item.label }}
       </a>
     </li>
@@ -37,10 +33,6 @@
   </button>
 </nav>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     HERO — video background, skip math symbols per spec §4
-════════════════════════════════════════════════════════════ -->
 <section id="hero">
   <video id="hero-video" autoplay muted loop playsinline preload="auto">
     <source src="{{ site.video }}" type="video/mp4"/>
@@ -51,7 +43,7 @@
     <h1 class="hero-h1">Explore Who We Are<br/>and What We Do</h1>
     <p class="hero-sub">
       Bridging global opportunities with local potential — guiding students from
-      NEET &amp; JEE to Ivy League &amp; Oxford with precision, strategy, and care.
+      NEET & JEE to Ivy League & Oxford with precision.
     </p>
     <div class="hero-actions">
       <a href="#about" class="btn btn-blue">Who We Are →</a>
@@ -60,47 +52,6 @@
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     ABOUT — white bg + math symbols
-════════════════════════════════════════════════════════════ -->
-<section id="about" class="section">
-  <!-- Math symbols -->
-  <div class="math-symbols" aria-hidden="true" id="mathAbout"></div>
-
-  <div class="section-head reveal">
-    <p class="eyebrow">Who We Are</p>
-    <h2 class="section-title">Our ambition is to shape<br/><em>futures, not just careers.</em></h2>
-    <p class="section-body">
-      Proteios is a comprehensive educational consultancy dedicated to guiding students toward
-      academic excellence and global opportunities — from Ivy League and Oxford admissions to
-      NEET, JEE, SAT, ACT, IELTS, and TOEFL preparation.
-    </p>
-  </div>
-
-  <!-- Founders -->
-  <div class="founders-grid">
-    {% for f in site.founders %}
-    <div class="founder-card reveal reveal-d{{ loop.index }}">
-      <div class="founder-img-wrap">
-        <img class="founder-img" src="{{ f.photo }}" alt="{{ f.name }}"
-             onerror="this.closest('.founder-img-wrap').style.background='#f3f4f6'"/>
-        <div class="founder-bar">
-          <div class="founder-role-tag">{{ f.role }}</div>
-          <div class="founder-name">{{ f.name }}</div>
-        </div>
-      </div>
-      <blockquote class="founder-quote">"{{ f.quote }}"</blockquote>
-      <p class="founder-bio">{{ f.bio }}</p>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     GALLERY — 4:3 grid, stagger fade
-════════════════════════════════════════════════════════════ -->
 <section id="gallery" class="section section--alt" aria-label="Student life gallery">
   <div class="math-symbols" aria-hidden="true" id="mathGallery"></div>
   <div class="section-head reveal">
@@ -110,315 +61,12 @@
   <div class="gallery-grid">
     {% for img in site.images %}
     <div class="gitem reveal" style="transition-delay:{{ loop.index0 * 0.08 }}s">
-      <img src="{{ img }}" alt="Education at Proteios, image {{ loop.index }}" loading="lazy"/>
+      <img src="{{ img }}" alt="Education at Proteios" loading="lazy"/>
     </div>
     {% endfor %}
   </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     WHY US — bullets + callouts + roadmap  (§5 CONTENT LOCKED)
-════════════════════════════════════════════════════════════ -->
-<section id="why-us" class="section">
-  <div class="math-symbols" aria-hidden="true" id="mathWhy"></div>
-  <div class="section-head reveal">
-    <p class="eyebrow">Why Us</p>
-    <h2 class="section-title">Why Choose <em>Proteios?</em></h2>
-  </div>
-
-  <!-- Version 1: Bullet grid -->
-  <div class="why-grid">
-    {% for item in site.why_us_bullets %}
-    <div class="why-card reveal" style="transition-delay:{{ loop.index0 * 0.08 }}s">
-      <div class="why-icon">{{ item.icon }}</div>
-      <div class="why-title">{{ item.title }}</div>
-      <p class="why-desc">{{ item.desc }}</p>
-    </div>
-    {% endfor %}
-  </div>
-
-  <!-- Version 2: Sharper callouts -->
-  <div class="callouts reveal">
-    {% for line in site.why_us_callouts %}
-    <div class="callout-item">{{ line }}</div>
-    {% endfor %}
-  </div>
-
-  <!-- Roadmap SVG — squiggly → structured path -->
-  <div class="roadmap-wrap reveal">
-    <svg viewBox="0 0 800 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- The animated path: squiggly start, resolves to structured roadmap line -->
-      <path class="roadmap-path"
-            d="M 400 360
-               C 340 340 260 310 300 270
-               C 340 230 460 220 420 180
-               C 380 140 260 130 300 90
-               C 340 50 460 40 400 10"
-            stroke="#2E6BBF" stroke-width="3" stroke-linecap="round"
-            fill="none"/>
-      <!-- Milestone nodes -->
-      <g class="roadmap-node">
-        <circle cx="400" cy="10"  r="7" fill="#2E6BBF"/>
-        <text x="415" y="14"  font-family="'Jost',sans-serif" font-size="12" fill="#1F2937">Destination Reached</text>
-      </g>
-      <g class="roadmap-node">
-        <circle cx="300" cy="90" r="7" fill="#2E6BBF"/>
-        <text x="315" y="94" font-family="'Jost',sans-serif" font-size="12" fill="#1F2937">University / Career Entry</text>
-      </g>
-      <g class="roadmap-node">
-        <circle cx="420" cy="180" r="7" fill="#2E6BBF"/>
-        <text x="435" y="184" font-family="'Jost',sans-serif" font-size="12" fill="#1F2937">Exam Preparation</text>
-      </g>
-      <g class="roadmap-node">
-        <circle cx="300" cy="270" r="7" fill="#2E6BBF"/>
-        <text x="315" y="274" font-family="'Jost',sans-serif" font-size="12" fill="#1F2937">Counselling &amp; Clarity</text>
-      </g>
-      <g class="roadmap-node">
-        <circle cx="400" cy="355" r="7" fill="#2E6BBF"/>
-        <text x="415" y="359" font-family="'Jost',sans-serif" font-size="12" fill="#1F2937">Your Starting Point</text>
-      </g>
-    </svg>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     STATS  (§6)
-════════════════════════════════════════════════════════════ -->
-<section id="stats" class="section section--alt">
-  <div class="math-symbols" aria-hidden="true" id="mathStats"></div>
-  <div class="stats-band">
-    {% for s in site.stats %}
-    <div class="stat-item">
-      <span class="stat-num"
-            {% if s.data_count %}
-            data-count-final="{{ s.value }}{{ s.suffix }}"
-            {% endif %}>
-        {% if s.data_count %}0{% else %}{{ s.value }}{% endif %}{{ s.suffix }}
-      </span>
-      <div class="stat-label">{{ s.label }}</div>
-      <!-- Lightweight sparkline -->
-      <div class="stat-graph">
-        <svg viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="spark-path"
-                d="M2 28 C12 20 18 24 28 14 C38 4 46 18 56 10 C66 2 72 8 78 4"
-                stroke="#2E6BBF" stroke-width="2" stroke-linecap="round" fill="none"/>
-        </svg>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     WHAT WE DO — Six Pathways  (§8 routes to /six-pathways)
-════════════════════════════════════════════════════════════ -->
-<section id="services" class="section">
-  <div class="math-symbols" aria-hidden="true" id="mathSvc"></div>
-  <div class="section-head reveal">
-    <p class="eyebrow">What We Do</p>
-    <h2 class="section-title">Six Pathways.<br/><em>One Commitment.</em></h2>
-    <p class="section-body">
-      Across all major academic pathways and geographies, we provide expert mentorship,
-      tailored strategy, and the confidence to succeed anywhere in the world.
-    </p>
-  </div>
-  <div class="services-grid reveal reveal-d1">
-    {% for svc in site.services %}
-    <div class="svc-card">
-      <span class="svc-symbol">{{ svc.symbol }}</span>
-      <div class="svc-title">{{ svc.title }}</div>
-      <p class="svc-desc">{{ svc.desc }}</p>
-      <a href="/{{ svc.slug }}" class="svc-link">Explore →</a>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     CAREERS  (§8)
-════════════════════════════════════════════════════════════ -->
-<section id="careers" class="section section--alt">
-  <div class="math-symbols" aria-hidden="true" id="mathCareers"></div>
-  <div class="section-head reveal">
-    <p class="eyebrow">Careers</p>
-    <h2 class="section-title">Achieve More Here</h2>
-    <p class="section-body">
-      Elevate your performance in a culture that surrounds you with exceptional people,
-      equips you with unmatched resources, and rewards your initiative.
-    </p>
-  </div>
-
-  <div class="ctabs reveal">
-    <button class="ctab-btn active" onclick="showTab('tab-internships', this)">Internships</button>
-    <button class="ctab-btn"        onclick="showTab('tab-events', this)">Programs &amp; Events</button>
-  </div>
-
-  <div id="tab-internships" class="ctab-panel active">
-    <p style="margin-bottom:1.5rem;color:var(--text-muted);font-size:.95rem;max-width:640px">
-      From the very beginning, we equip our interns to make critical contributions through
-      real responsibility, mentorship from senior consultants, and exposure to global academic pathways.
-    </p>
-    <div class="career-cards">
-      {% for role in site.internship_roles %}
-      <div class="career-card">
-        <div class="career-card-title">{{ role.title }}</div>
-        <p class="career-card-desc">{{ role.desc }}</p>
-        <a href="/internships" class="career-card-cta">Apply →</a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <div id="tab-events" class="ctab-panel">
-    <p style="margin-bottom:1.5rem;color:var(--text-muted);font-size:.95rem;max-width:640px">
-      Connect with us across campuses, at conferences, and in our offices.
-    </p>
-    <div class="career-cards">
-      {% for ev in site.events %}
-      <div class="career-card">
-        <div class="career-card-title">{{ ev.title }}</div>
-        <p class="career-card-desc">{{ ev.desc }}</p>
-        <a href="/programs-events" class="career-card-cta">View Details →</a>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     GLOBAL PRESENCE — Across Geographies  (§9)
-════════════════════════════════════════════════════════════ -->
-<section id="global" class="section">
-  <div class="math-symbols" aria-hidden="true" id="mathGlobal"></div>
-  <div class="section-head reveal">
-    <p class="eyebrow">Global Presence</p>
-    <h2 class="section-title">Across <em>Geographies</em></h2>
-    <p class="section-body">
-      We pursue opportunity wherever it leads — guiding students from the valleys of Kashmir
-      to the lecture halls of Oxford and Harvard.
-    </p>
-  </div>
-  <div class="regions-grid">
-    {% for region in site.regions %}
-    <div class="region-card reveal reveal-d{{ loop.index }}">
-      <div class="region-title">{{ region.name }}</div>
-      <ul class="region-list">
-        {% for city in region.cities %}
-        <li>{{ city }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     WHERE WE ARE — MAP LINK LOCKED  (§10)
-════════════════════════════════════════════════════════════ -->
-<section id="where-we-are" class="section section--alt where-section">
-  <div class="math-symbols" aria-hidden="true" id="mathWhere"></div>
-  <div class="section-head reveal" style="text-align:center">
-    <p class="eyebrow" style="justify-content:center">Where We Are</p>
-    <h2 class="section-title">Find Us</h2>
-    <p class="section-body" style="text-align:center;margin:0 auto 2.5rem">
-      Visit us in person. We'd love to meet you and understand your goals face to face.
-    </p>
-    <a href="{{ site.maps_url }}"
-       target="_blank" rel="noopener noreferrer"
-       class="btn-maps">View on Google Maps</a>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     FOOTER  (§11)  white bg, logo graphic only
-════════════════════════════════════════════════════════════ -->
-<footer>
-  <div class="footer-grid">
-    <!-- Brand -->
-    <div class="footer-brand-col">
-      <div class="footer-logo">
-        <img src="{{ site.logo }}" alt="{{ site.name }}"
-             onerror="this.style.display='none'"/>
-      </div>
-      <p class="footer-tagline">
-        Bridging global opportunities with local potential — shaping academic journeys and futures.
-      </p>
-      <div class="social-row">
-        <a class="social-ico" href="{{ site.social.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a class="social-ico" href="{{ site.social.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
-        <a class="social-ico" href="{{ site.social.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <a class="social-ico" href="{{ site.social.youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
-          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- Who We Are -->
-    <div>
-      <p class="footer-col-title">Who We Are</p>
-      <ul class="footer-links">
-        <li><a href="#about">About Proteios</a></li>
-        <li><a href="#about">Our Founders</a></li>
-        <li><a href="#global">Our Reach</a></li>
-        <li><a href="#why-us">Why Us</a></li>
-      </ul>
-    </div>
-
-    <!-- What We Do + Careers -->
-    <div>
-      <p class="footer-col-title">What We Do</p>
-      <ul class="footer-links">
-        <li><a href="/six-pathways">Six Pathways</a></li>
-        <li><a href="/internships">Internships</a></li>
-        <li><a href="/programs-events">Programs &amp; Events</a></li>
-        <li><a href="/contact">Contact Us</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <div class="footer-legal">
-      <a href="#">Privacy</a>
-      <a href="#">Terms of Use</a>
-    </div>
-    <p class="footer-copy">&copy; {{ site.year }} {{ site.name }}. All rights reserved.</p>
-  </div>
-</footer>
-
-
-<!-- ── MATH SYMBOL INJECTOR (JS) ───────────────────────────── -->
-<script>
-(function() {
-  const SYMBOLS = ['∑','π','√','∞','∆','∫','θ'];
-  const containers = document.querySelectorAll('.math-symbols');
-  containers.forEach(function(wrap) {
-    for (var i = 0; i < 18; i++) {
-      var s = document.createElement('span');
-      s.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-      s.style.left        = Math.random() * 95 + '%';
-      s.style.top         = Math.random() * 90 + '%';
-      s.style.fontSize    = (16 + Math.floor(Math.random() * 17)) + 'px';
-      s.style.animationDelay    = (Math.random() * 8) + 's';
-      s.style.animationDuration = (10 + Math.random() * 8) + 's';
-      wrap.appendChild(s);
-    }
-  });
-})();
-</script>
-
-<script src="/static/js/main.js" defer></script>
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </body>
 </html>
