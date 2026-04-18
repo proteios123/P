@@ -8,12 +8,10 @@ Build Spec v1.3
 from flask import Flask, render_template, jsonify, request, redirect
 import requests as req_lib
 from datetime import datetime
+import os
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = "proteios-edu-v1.3"
-
-# ── FORMSPREE CONFIG ──────────────────────────────────────────
-FORMSPREE_URL = "https://formspree.io/f/mjgjwwlr"
 
 # ── SITE DATA ─────────────────────────────────────────────────
 SITE = {
@@ -117,6 +115,9 @@ SITE = {
     ],
 }
 
+# ── FORMSPREE CONFIG ──────────────────────────────────────────
+FORMSPREE_URL = "https://formspree.io/f/mjgjwwlr"
+
 # ── PAGE CONTEXT HELPERS ──────────────────────────────────────
 FORM_PAGES = {
     "six-pathways":   {"h1": "Six Pathways. One Commitment.", "intro": "Tell us about yourself and we'll connect you with the right pathway."},
@@ -128,29 +129,30 @@ FORM_PAGES = {
 # ── MAIN ROUTES ───────────────────────────────────────────────
 @app.route("/")
 def index():
+    # Pass SITE to the template; Jinja2 will look for 'social' within SITE
     return render_template("index.html", site=SITE, page="home")
 
 @app.route("/six-pathways")
 def six_pathways():
-    ctx = FORM_PAGES["six-pathways"]
+    ctx = FORM_PAGES.get("six-pathways")
     return render_template("form_page.html", site=SITE, page="six-pathways",
                            h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/internships")
 def internships():
-    ctx = FORM_PAGES["internships"]
+    ctx = FORM_PAGES.get("internships")
     return render_template("form_page.html", site=SITE, page="internships",
                            h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/programs-events")
 def programs_events():
-    ctx = FORM_PAGES["programs-events"]
+    ctx = FORM_PAGES.get("programs-events")
     return render_template("form_page.html", site=SITE, page="programs-events",
                            h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/contact")
 def contact():
-    ctx = FORM_PAGES["contact"]
+    ctx = FORM_PAGES.get("contact")
     return render_template("form_page.html", site=SITE, page="contact",
                            h1=ctx["h1"], intro=ctx["intro"])
 
@@ -196,4 +198,6 @@ def not_found(e):
 
 # ── ENTRY ─────────────────────────────────────────────────────
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    # Standard production practice: check for an environment port
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)
