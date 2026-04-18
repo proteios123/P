@@ -1,12 +1,25 @@
-from flask import Flask, render_template, jsonify, request
+"""
+================================================================
+PROTEIOS EDUCATION — FLASK BACKEND  (app.py)
+Build Spec v1.3
+
+Routes:
+  /                  → Homepage
+  /six-pathways      → Six Pathways form page
+  /internships       → Internships form page
+  /programs-events   → Programs & Events form page
+  /contact           → Contact form page
+  /api/stats         → JSON stats
+  /api/contact       → Proxy to Formspree (server-side)
+
+Install:  pip install flask requests
+Run:      python app.py  →  http://localhost:5000
+================================================================
+"""
+
+from flask import Flask, render_template, jsonify, request, redirect
+import requests as req_lib
 from datetime import datetime
-
-# SAFE IMPORT FOR VERCEL
-try:
-    import requests as req_lib
-except Exception:
-    req_lib = None
-
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = "proteios-edu-v1.3"
@@ -31,42 +44,72 @@ SITE = {
         {"value": "∞", "suffix": "", "label": "Endless Possibilities", "data_count": None},
     ],
 
-    # ✔ FIX: REQUIRED BY YOUR TEMPLATES
-    "social": {
-        "instagram": "https://www.instagram.com/proteioseducation",
-        "facebook": "https://www.facebook.com/share/1DJoNKSVj2/",
-        "linkedin": "https://www.linkedin.com/in/proteios-education-3050a43b6",
-        "youtube": "https://youtube.com/@proteioseducation"
-    }
+    "why_us_bullets": [
+        {"icon": "🎯", "title": "Real-world focus", "desc": "Not just theory — actual skills and outcomes"},
+        {"icon": "🧭", "title": "Clarity & direction", "desc": "Helping students understand where they stand and where they're heading"},
+        {"icon": "⚡", "title": "Modern approach", "desc": "Combining education with innovation and real-world relevance"},
+        {"icon": "🤝", "title": "Strong community", "desc": "Building a network of ambitious students and mentors"},
+        {"icon": "🚀", "title": "Execution over talk", "desc": "Focusing on action, projects, and opportunities"},
+        {"icon": "✨", "title": "Built for this generation", "desc": "Designed for students who want more than traditional systems"},
+    ],
+
+    "why_us_callouts": [
+        "Not just learning — real-world execution",
+        "Not just guidance — clear direction",
+        "Not just ideas — actual opportunities",
+        "Not just a platform — a growing ecosystem",
+    ],
+
+    "services": [
+        {"symbol": "∑", "title": "National Competitive Exams", "desc": "Specialized guidance for NEET, JEE, and other Indian national-level examinations. Strategic preparation and mentorship beyond scores.", "slug": "six-pathways"},
+        {"symbol": "∞", "title": "Global University Admissions", "desc": "End-to-end support for Ivy League, Oxford, Cambridge, and top universities worldwide.", "slug": "six-pathways"},
+        {"symbol": "π", "title": "Standardized Testing", "desc": "Comprehensive preparation for SAT, ACT, IELTS, and TOEFL.", "slug": "six-pathways"},
+        {"symbol": "Δ", "title": "Career Counselling", "desc": "Deep sessions mapping strengths, aspirations, and goals to the right academic paths.", "slug": "six-pathways"},
+        {"symbol": "φ", "title": "Educator & School Programs", "desc": "CPD programs and hands-on training for educators — improving teaching and learning outcomes.", "slug": "six-pathways"},
+        {"symbol": "λ", "title": "Parent & Family Guidance", "desc": "Helping families make informed decisions about their children's education.", "slug": "six-pathways"},
+    ],
 }
 
-# ── ROUTES ────────────────────────────────────────────────────
+FORM_PAGES = {
+    "six-pathways": {"h1": "Six Pathways. One Commitment.", "intro": "Tell us about yourself and we'll connect you with the right pathway."},
+    "internships": {"h1": "Internship Opportunities", "intro": "Start your journey with Proteios. Fill in the form and we'll be in touch."},
+    "programs-events": {"h1": "Programs & Events", "intro": "Connect with us at events, campuses, conferences, and our offices."},
+    "contact": {"h1": "Contact Us", "intro": "Reach out to the Proteios team. We respond within 24–48 hours."},
+}
+
+# ── ROUTES ───────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html", site=SITE, page="home")
 
 @app.route("/six-pathways")
 def six_pathways():
-    return render_template("form_page.html", site=SITE, page="six-pathways")
+    ctx = FORM_PAGES["six-pathways"]
+    return render_template("form_page.html", site=SITE, page="six-pathways", h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/internships")
 def internships():
-    return render_template("form_page.html", site=SITE, page="internships")
+    ctx = FORM_PAGES["internships"]
+    return render_template("form_page.html", site=SITE, page="internships", h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/programs-events")
 def programs_events():
-    return render_template("form_page.html", site=SITE, page="programs-events")
+    ctx = FORM_PAGES["programs-events"]
+    return render_template("form_page.html", site=SITE, page="programs-events", h1=ctx["h1"], intro=ctx["intro"])
 
 @app.route("/contact")
 def contact():
-    return render_template("form_page.html", site=SITE, page="contact")
+    ctx = FORM_PAGES["contact"]
+    return render_template("form_page.html", site=SITE, page="contact", h1=ctx["h1"], intro=ctx["intro"])
 
-# ── API: STATS ────────────────────────────────────────────────
+# ── API ────────────────────────────────────────────────
 @app.route("/api/stats")
 def api_stats():
-    return jsonify({"stats": SITE["stats"]})
+    return jsonify({
+        "stats": SITE["stats"],
+        "services": [s["title"] for s in SITE["services"]],
+    })
 
-# ── API: CONTACT ──────────────────────────────────────────────
 @app.route("/api/contact", methods=["POST"])
 def api_contact():
     data = request.get_json(silent=True) or {}
@@ -74,7 +117,7 @@ def api_contact():
     required = ["name", "parentage", "school", "student_class"]
     for field in required:
         if not data.get(field, "").strip():
-            return jsonify({"ok": False, "error": f"{field} is required"}), 400
+            return jsonify({"ok": False, "error": f"'{field}' is required."}), 400
 
     payload = {
         "name": data.get("name"),
@@ -86,9 +129,6 @@ def api_contact():
     }
 
     try:
-        if req_lib is None:
-            return jsonify({"ok": False, "error": "Requests not available"}), 500
-
         resp = req_lib.post(
             FORMSPREE_URL,
             json=payload,
@@ -97,19 +137,13 @@ def api_contact():
         )
 
         if resp.status_code == 200:
-            return jsonify({"ok": True, "message": "Submitted successfully"})
+            return jsonify({"ok": True, "message": "Thank you. Our team will reach out soon."})
 
-        return jsonify({"ok": False, "error": "Form submission failed"}), 502
+        return jsonify({"ok": False, "error": "Something went wrong. Try again."}), 502
 
-    except Exception as e:
-        return jsonify({"ok": False, "error": str(e)}), 500
-
-
-# ── ERROR HANDLER ─────────────────────────────────────────────
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("index.html", site=SITE, page="404"), 404
+    except Exception:
+        return jsonify({"ok": False, "error": "Something went wrong. Try again."}), 500
 
 
-# ── VERCEL ENTRY ───────────────────────────────────────────────
-app = app
+# ── VERCEL ENTRY POINT (IMPORTANT FIX) ───────────────────────
+# DO NOT use app.run() on Vercel
