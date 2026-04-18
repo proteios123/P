@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ h1 }} — {{ site.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-logo">
+    <a href="/">
+      <img src="{{ site.logo }}" alt="{{ site.name }}" height="44"
+           onerror="this.style.display='none'"/>
+    </a>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    {% for item in site.nav %}
+    <li>
+      <a href="{{ item.href }}"
+         {% if item.label == 'Work Opportunities' %}class="nav-cta-link"{% endif %}>
+        {{ item.label }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- FORM PAGE — math symbols on white bg -->
+<div style="position:relative; background:#fff; min-height:100vh; padding-top:72px;">
+  <div class="math-symbols" aria-hidden="true" id="mathForm" style="position:fixed"></div>
+
+  <div class="form-page-wrap">
+    <h1 class="form-page-h1">{{ h1 }}</h1>
+    <p class="form-page-intro">{{ intro }}</p>
+
+    <!-- Formspree form — POST to mjgjwwlr -->
+    <form class="contact-form" id="contactForm" novalidate>
+      <!-- hidden origin -->
+      <input type="hidden" name="_page" value="{{ page }}"/>
+
+      <!-- 1. Name — required -->
+      <div class="form-field">
+        <label class="form-label" for="name">Name <span class="req">*</span></label>
+        <input class="form-input" type="text" id="name" name="name"
+               placeholder="Your full name" required autocomplete="name"/>
+      </div>
+
+      <!-- 2. Parentage — required -->
+      <div class="form-field">
+        <label class="form-label" for="parentage">Parentage <span class="req">*</span></label>
+        <input class="form-input" type="text" id="parentage" name="parentage"
+               placeholder="Father's / Guardian's name" required/>
+      </div>
+
+      <!-- 3. School — required -->
+      <div class="form-field">
+        <label class="form-label" for="school">School <span class="req">*</span></label>
+        <input class="form-input" type="text" id="school" name="school"
+               placeholder="Your current school or institution" required/>
+      </div>
+
+      <!-- 4. Class — required -->
+      <div class="form-field">
+        <label class="form-label" for="student_class">Class <span class="req">*</span></label>
+        <input class="form-input" type="text" id="student_class" name="student_class"
+               placeholder="e.g. Class 11, 12, Graduate" required/>
+      </div>
+
+      <!-- 5. Message — optional -->
+      <div class="form-field">
+        <label class="form-label" for="message">Your Message for Proteios Team</label>
+        <textarea class="form-textarea" id="message" name="message"
+                  placeholder="What type of service are you looking for?"></textarea>
+      </div>
+
+      <!-- Success / Error -->
+      <div class="form-msg" id="formMsg" role="alert" aria-live="polite"></div>
+
+      <!-- Submit -->
+      <button type="submit" class="form-submit">Send Message</button>
+    </form>
+
+    <p style="margin-top:2.5rem; font-size:0.82rem; color:var(--text-muted);">
+      ← <a href="/" style="color:var(--blue)">Back to Proteios</a>
+    </p>
+  </div>
+</div>
+
+<!-- Math symbol injector -->
+<script>
+(function() {
+  var SYMBOLS = ['∑','π','√','∞','∆','∫','θ'];
+  var wrap = document.getElementById('mathForm');
+  for (var i = 0; i < 18; i++) {
+    var s = document.createElement('span');
+    s.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+    s.style.left = Math.random() * 95 + '%';
+    s.style.top  = Math.random() * 90 + '%';
+    s.style.fontSize = (16 + Math.floor(Math.random() * 17)) + 'px';
+    s.style.animationDelay    = (Math.random() * 8) + 's';
+    s.style.animationDuration = (10 + Math.random() * 8) + 's';
+    wrap.appendChild(s);
+  }
+})();
+</script>
+
+<script src="/static/js/main.js" defer></script>
+</body>
+</html>
